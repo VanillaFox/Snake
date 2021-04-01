@@ -6,8 +6,7 @@ bool GameOver;
 
 int x = widht / 2;
 int y = height / 2;
-int FruitX = 20;
-int FruitY = 15;
+int FruitX, FruitY;
 int Score = 0;
 
 std::vector<std::pair<int, int>> Tail;
@@ -21,10 +20,18 @@ enum Directon {Stop = 0, Left, Right, Up, Down, End};
 Directon dir = Stop;
 
 void Draw(){
+
+    for(int i = 0; i < Tail.size(); i++){
+        if(Tail[i].first == x && Tail[i].second == y){
+            dir = End;
+            return;
+        }
+    }
+
     int r = std::system("clear");
 
     for(int i = 0; i < widht; i++){
-        std::cout << "-";
+        std::cout << "+";
     }
 
     std::cout << std::endl;
@@ -56,20 +63,21 @@ void Draw(){
     }
 
     for(int i = 0; i < widht; i++){
-        std::cout << "-";
+        std::cout << "+";
     }
+    
     std::cout << std::endl;
-    //if(x == 0 || x == widht - 1 || y == 0 || y == height - 1){
-     //   dir = End;
-   // }
+
     if(y == FruitY && x == FruitX){
         Tail.push_back(std::make_pair(0, 0));
         NewCoordsFruit();
         Score += 15;
     }
+    
     int a, b, a1, b1;
     a = x;
     b = y;
+    
     for(int i = 0; i < Tail.size(); i++){
         a1 = Tail[i].first;
         b1 = Tail[i].second;
@@ -78,8 +86,9 @@ void Draw(){
         a = a1;
         b = b1;
     }
+    
     std::cout << "Score: " << Score << std::endl;
-    usleep(55000);
+    usleep(65000);
     //delay(5000);
 }
 
@@ -132,13 +141,13 @@ void Logic(){
                 y--;
             break;
         case Down:
-            if(y == height - 1)
+            if(y == height - 2)
                 GameOver = true;
             else
                 y++; 
             break;
-        //case End:
-          //  GameOver = true;
-            //break;
+        case End:
+            GameOver = true;
+            break;
     }
 }
