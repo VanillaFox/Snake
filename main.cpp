@@ -1,12 +1,11 @@
 #include <iostream>
 #include "func.h"
 
-
 int main(){
     srand(time(NULL));
     Setup();
     while(!GameOver){
-        Draw();
+        Map();
         Input();
         Logic();
     }
