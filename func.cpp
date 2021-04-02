@@ -1,23 +1,34 @@
 #include "func.h"
 #include "input.h"
 #include <vector>
+#include <ctime>
 
 bool GameOver;
 
 int x = widht / 2;
 int y = height / 2;
-int FruitX, FruitY;
 int Score = 0;
 
-std::vector<std::pair<int, int>> Tail;
+std::vector<std::pair<int, int>> Tail, Fruit;
 
-void NewCoordsFruit(){
-    FruitX = rand() % (widht - 2) + 1;
-    FruitY = rand() % (height - 2) + 1;
+void NewX(int &x){
+    x = rand() % (widht - 2) + 1;
 }
+
+void NewY(int &y){
+    y = rand() % (height - 2) + 1;
+}
+void NewCoordsFruit(std::pair<int, int> & item){
+    NewX(item.first);
+    NewY(item.second);
+}
+
+
 
 enum Directon {Stop = 0, Left, Right, Up, Down, End};
 Directon dir = Stop;
+
+std::clock_t start = 0;
 
 void Draw(){
 
@@ -30,6 +41,13 @@ void Draw(){
 
     int r = std::system("clear");
 
+    if(( std::clock() - start ) / (double) CLOCKS_PER_SEC > 0.1){
+        start = std::clock();
+        if(Fruit.size() < 3){
+            Fruit.push_back(std::make_pair(0, 0));
+            NewCoordsFruit(Fruit[Fruit.size() - 1]);
+        }
+    }
     for(int i = 0; i < widht; i++){
         std::cout << "+";
     }
@@ -43,11 +61,10 @@ void Draw(){
             }
             else if(j == x && i == y){
                 std::cout << "o";
-            }else if(j == FruitX && i == FruitY){
-                std::cout << "$";
             }
             else{
                 bool haveTail = false;
+                bool haveFruit = false;
                 for(int k = 0; k < Tail.size(); k++){
                     if(Tail[k].first == j && Tail[k].second == i){
                         std::cout << "*";
@@ -55,6 +72,14 @@ void Draw(){
                     }
                 }
                 if(!haveTail){
+                    for(int k = 0; k < Fruit.size(); k++){
+                        if(Fruit[k].first == j && Fruit[k].second == i){
+                            std::cout << "$";
+                            haveFruit = true;
+                        }
+                    }
+                }
+                if(!(haveTail || haveFruit)){
                     std::cout << " ";
                 }
             }
@@ -65,13 +90,14 @@ void Draw(){
     for(int i = 0; i < widht; i++){
         std::cout << "+";
     }
-    
-    std::cout << std::endl;
 
-    if(y == FruitY && x == FruitX){
-        Tail.push_back(std::make_pair(0, 0));
-        NewCoordsFruit();
-        Score += 15;
+    std::cout << std::endl;
+    for(int i = 0; i < Fruit.size(); i++){
+        if(y == Fruit[i].second && x == Fruit[i].first){
+            Tail.push_back(std::make_pair(0, 0));
+            NewCoordsFruit(Fruit[i]);
+            Score += 15;
+        }
     }
     
     int a, b, a1, b1;
@@ -89,12 +115,12 @@ void Draw(){
     
     std::cout << "Score: " << Score << std::endl;
     usleep(65000);
-    //delay(5000);
 }
 
 void Setup(){
-    GameOver = false;   
-    NewCoordsFruit();
+    GameOver = false;
+    Fruit.push_back(std::make_pair(0, 0));
+    NewCoordsFruit(Fruit[0]);
 }
 
 void Input(){
