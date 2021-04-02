@@ -19,7 +19,7 @@ bool same(){
     return false;
 }
 
-void cheak(){
+void check(){
     while(same()){
         fruit.NewCoordsForLast();
     }
@@ -44,7 +44,7 @@ void Map(){
         if(fruit.FruitsSize() < 3){
             fruit.AddFruit();
         }
-        cheak();
+        check();
 
     }
     for(int i = 0; i < widht; i++){
@@ -95,7 +95,7 @@ void Map(){
         if(snake.HeadY() == fruit.FruitY(i) && snake.HeadX() == fruit.FruitX(i)){
             snake.IncreaseTail();
             fruit.RewriteFruit(i);
-            cheak();
+            check();
             Score += 15;
         }
     }
