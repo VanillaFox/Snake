@@ -6,7 +6,7 @@ const int widht = 30;
 const int height = 30;
 extern bool GameOver;
 
-void Draw();
+void Map();
 void Setup();
 void Logic();
 void Input();
