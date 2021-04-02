@@ -13,14 +13,7 @@ class Snake{
         int TailX(int i);
         int TailY(int i);
         int TailSize();
-        void NewCoord(int i, char c){
-            if(c == 'x'){
-                Head.first += i;
-            }
-            else{
-                Head.second += i;
-            }
-        }
+        void NewCoord(int i, char c);
         
         void IncreaseTail();
         void MoveTail();
