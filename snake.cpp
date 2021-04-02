@@ -56,3 +56,10 @@ void Snake::MoveTail(){
         b = b1;
     }
 }
+
+void Snake::NewCoord(int i, char c){
+    if(c == 'x')
+        Head.first += i;
+    else
+        Head.second += i;
+}
