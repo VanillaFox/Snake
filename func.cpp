@@ -2,51 +2,50 @@
 #include "input.h"
 #include <vector>
 #include <ctime>
+#include "snake.h"
+#include "fruit.h"
 
 bool GameOver;
-
-int x = widht / 2;
-int y = height / 2;
+Snake snake;
+Fruit fruit;
 int Score = 0;
 
-std::vector<std::pair<int, int>> Tail, Fruit;
-
-void NewX(int &x){
-    x = rand() % (widht - 2) + 1;
+bool same(){
+    for(int i = 0; i < snake.TailSize(); i++){
+        if(snake.TailX(i) == fruit.LastFruitX() && snake.TailY(i) == fruit.LastFruitY()){
+           return true;
+        }
+    }
+    return false;
 }
 
-void NewY(int &y){
-    y = rand() % (height - 2) + 1;
+void cheak(){
+    while(same()){
+        fruit.NewCoordsForLast();
+    }
 }
-void NewCoordsFruit(std::pair<int, int> & item){
-    NewX(item.first);
-    NewY(item.second);
-}
-
-
 
 enum Directon {Stop = 0, Left, Right, Up, Down, End};
 Directon dir = Stop;
 
 std::clock_t start = 0;
 
-void Draw(){
+void Map(){
 
-    for(int i = 0; i < Tail.size(); i++){
-        if(Tail[i].first == x && Tail[i].second == y){
-            dir = End;
-            return;
-        }
+    if(snake.CrashYourself()){
+        dir = End;
+        return;
     }
 
     int r = std::system("clear");
 
     if(( std::clock() - start ) / (double) CLOCKS_PER_SEC > 0.1){
         start = std::clock();
-        if(Fruit.size() < 3){
-            Fruit.push_back(std::make_pair(0, 0));
-            NewCoordsFruit(Fruit[Fruit.size() - 1]);
+        if(fruit.FruitsSize() < 3){
+            fruit.AddFruit();
         }
+        cheak();
+
     }
     for(int i = 0; i < widht; i++){
         std::cout << "+";
@@ -59,21 +58,21 @@ void Draw(){
             if(j == 0 || j == widht - 1){
                 std::cout << "|";
             }
-            else if(j == x && i == y){
-                std::cout << "o";
+            else if(j == snake.HeadX() && i == snake.HeadY()){
+                std::cout << "O";
             }
             else{
                 bool haveTail = false;
                 bool haveFruit = false;
-                for(int k = 0; k < Tail.size(); k++){
-                    if(Tail[k].first == j && Tail[k].second == i){
+                for(int k = 0; k < snake.TailSize(); k++){
+                    if(snake.TailX(k) == j && snake.TailY(k) == i){
                         std::cout << "*";
                         haveTail = true;
                     }
                 }
                 if(!haveTail){
-                    for(int k = 0; k < Fruit.size(); k++){
-                        if(Fruit[k].first == j && Fruit[k].second == i){
+                    for(int k = 0; k < fruit.FruitsSize(); k++){
+                        if(fruit.FruitX(k) == j && fruit.FruitY(k) == i){
                             std::cout << "$";
                             haveFruit = true;
                         }
@@ -92,26 +91,15 @@ void Draw(){
     }
 
     std::cout << std::endl;
-    for(int i = 0; i < Fruit.size(); i++){
-        if(y == Fruit[i].second && x == Fruit[i].first){
-            Tail.push_back(std::make_pair(0, 0));
-            NewCoordsFruit(Fruit[i]);
+    for(int i = 0; i < fruit.FruitsSize(); i++){
+        if(snake.HeadY() == fruit.FruitY(i) && snake.HeadX() == fruit.FruitX(i)){
+            snake.IncreaseTail();
+            fruit.RewriteFruit(i);
+            cheak();
             Score += 15;
         }
     }
-    
-    int a, b, a1, b1;
-    a = x;
-    b = y;
-    
-    for(int i = 0; i < Tail.size(); i++){
-        a1 = Tail[i].first;
-        b1 = Tail[i].second;
-        Tail[i].first = a;
-        Tail[i].second = b;
-        a = a1;
-        b = b1;
-    }
+    snake.MoveTail();
     
     std::cout << "Score: " << Score << std::endl;
     usleep(65000);
@@ -119,8 +107,7 @@ void Draw(){
 
 void Setup(){
     GameOver = false;
-    Fruit.push_back(std::make_pair(0, 0));
-    NewCoordsFruit(Fruit[0]);
+    fruit.AddFruit();
 }
 
 void Input(){
@@ -149,28 +136,28 @@ void Input(){
 void Logic(){
     switch(dir){
         case Left:
-            if(x == 1)
+            if(snake.HeadX() == 1)
                 GameOver = true;
             else
-                x--;            
+                snake.NewCoord(-1, 'x');           
             break;
         case Right:
-            if(x == widht - 2)
+            if(snake.HeadX() == widht - 2)
                 GameOver = true;
             else
-                x++;            
+                snake.NewCoord(1, 'x');           
             break;
         case Up:
-            if(y == 1)
+            if(snake.HeadY() == 1)
                 GameOver = true;
             else
-                y--;
+                snake.NewCoord(-1, 'y');           
             break;
         case Down:
-            if(y == height - 2)
+            if(snake.HeadY() == height - 2)
                 GameOver = true;
             else
-                y++; 
+                snake.NewCoord(1, 'y');
             break;
         case End:
             GameOver = true;
