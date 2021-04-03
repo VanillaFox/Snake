@@ -4,8 +4,9 @@ class Snake{
     private:
         std::vector<std::pair<int, int>> Tail;
         std::pair<int, int> Head;
+
     public:
-        Snake();
+        Snake(){}
         ~Snake();
 
         int HeadX();
@@ -14,9 +15,13 @@ class Snake{
         int TailY(int i);
         int TailSize();
         void NewCoord(int i, char c);
+        void MoveTail();
         
         void IncreaseTail();
-        void MoveTail();
         bool CrashYourself();
+
+        void NewHead(int w, int h){
+            Head = std::make_pair(w / 2, h / 2);
+        }
 
 };
