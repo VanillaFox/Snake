@@ -1,8 +1,5 @@
 #include <iostream>
 #include "snake.h"
-#include "func.h"
-
-Snake::Snake(): Head(std::make_pair(widht / 2, height / 2)){}
 
 Snake::~Snake(){
     Tail.clear();
