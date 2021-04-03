@@ -1,5 +1,6 @@
 #include "game.h"
 #include "input.h"
+
 Map::Map(): Start(0){}
 Map::~Map(){}
 
@@ -29,45 +30,33 @@ void Map::Horizontal(){
     std::cout << std::endl;
 }
 
-void Map::MiddleMap(Snake &snake, Fruit &fruit)
-{
-    for (int i = 1; i < Height - 1; i++)
-    {
-        for (int j = 0; j < Wedht; j++)
-        {
-            if (j == 0 || j == Wedht - 1)
-            {
+void Map::MiddleMap(Snake &snake, Fruit &fruit){
+    for (int i = 1; i < Height - 1; i++){
+        for (int j = 0; j < Wedht; j++){
+            if (j == 0 || j == Wedht - 1){
                 std::cout << Wall;
             }
-            else if (j == snake.HeadX() && i == snake.HeadY())
-            {
+            else if (j == snake.HeadX() && i == snake.HeadY()){
                 std::cout << SHead;
             }
-            else
-            {
+            else{
                 bool haveTail = false;
                 bool haveFruit = false;
-                for (int k = 0; k < snake.TailSize(); k++)
-                {
-                    if (snake.TailX(k) == j && snake.TailY(k) == i)
-                    {
+                for (int k = 0; k < snake.TailSize(); k++){
+                    if (snake.TailX(k) == j && snake.TailY(k) == i){
                         std::cout << STail;
                         haveTail = true;
                     }
                 }
-                if (!haveTail)
-                {
-                    for (int k = 0; k < fruit.Size(); k++)
-                    {
-                        if (fruit.FruitX(k) == j && fruit.FruitY(k) == i)
-                        {
+                if (!haveTail){
+                    for (int k = 0; k < fruit.Size(); k++){
+                        if (fruit.FruitX(k) == j && fruit.FruitY(k) == i){
                             std::cout << EFruit;
                             haveFruit = true;
                         }
                     }
                 }
-                if (!(haveTail || haveFruit))
-                {
+                if (!(haveTail || haveFruit)){
                     std::cout << " ";
                 }
             }
@@ -76,8 +65,7 @@ void Map::MiddleMap(Snake &snake, Fruit &fruit)
     }
 }
 
-void Map::DrawMap(Snake &snake, Fruit &fruit)
-{
+void Map::DrawMap(Snake &snake, Fruit &fruit){
     Horizontal();
     MiddleMap(snake, fruit);
     Horizontal();
