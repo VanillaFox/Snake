@@ -1,20 +1,22 @@
 #include "fruit.h"
-#include "func.h"
 #include <iostream>
-
-Fruit::Fruit(){}
 
 Fruit::~Fruit(){
     Fruits.clear();
 }
 
 void Fruit::NewCoordsForLast(){
-    Fruits[Fruits.size() - 1].first = rand() % (widht - 2) + 1;
-    Fruits[Fruits.size() - 1].second = rand() % (height - 2) + 1;
+    Fruits[Fruits.size() - 1].first = rand() % (Wedht - 2) + 1;
+    Fruits[Fruits.size() - 1].second = rand() % (Height - 2) + 1;
 }
 
-int Fruit::FruitsSize(){
+
+int Fruit::Size(){
     return Fruits.size();
+}
+
+int Fruit::MaxSize(){
+    return maxSize;
 }
 
 int Fruit::FruitX(int i){
