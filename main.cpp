@@ -1,15 +1,9 @@
 #include <iostream>
-#include "func.h"
+#include "game.h"
 
 int main(){
     srand(time(NULL));
-    Setup();
-    while(!GameOver){
-        Map();
-        Input();
-        Logic();
-    }
-    std::cout << std::endl;
-    std::cout << "Game over!" << std::endl;
+    Game game;
+    game.Play();
     return 0;
 }
