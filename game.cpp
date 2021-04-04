@@ -27,43 +27,71 @@ void Map::Horizontal(){
     for(int i = 0; i < Wedht; i++){
         std::cout << Wall;
     }
-    std::cout << std::endl;
+    NewLine();
 }
 
 void Map::MiddleMap(Snake &snake, Fruit &fruit){
     for (int i = 1; i < Height - 1; i++){
         for (int j = 0; j < Wedht; j++){
-            if (j == 0 || j == Wedht - 1){
-                std::cout << Wall;
-            }
-            else if (j == snake.HeadX() && i == snake.HeadY()){
-                std::cout << SHead;
-            }
-            else{
-                bool haveTail = false;
-                bool haveFruit = false;
-                for (int k = 0; k < snake.TailSize(); k++){
-                    if (snake.TailX(k) == j && snake.TailY(k) == i){
-                        std::cout << STail;
-                        haveTail = true;
-                    }
-                }
-                if (!haveTail){
-                    for (int k = 0; k < fruit.Size(); k++){
-                        if (fruit.FruitX(k) == j && fruit.FruitY(k) == i){
-                            std::cout << EFruit;
-                            haveFruit = true;
-                        }
-                    }
-                }
-                if (!(haveTail || haveFruit)){
-                    std::cout << " ";
-                }
-            }
+            if(DrawWall(j))
+                continue;
+            if(DrawHead(snake, i, j))
+                continue;
+            if(DrawFruit(fruit, i, j))
+                continue;
+            if(DrawTail(snake, i, j))
+                continue;
+            DrawPass();
         }
-        std::cout << std::endl;
+        NewLine();
     }
 }
+
+void Map::NewLine(){
+    std::cout << std::endl;
+}
+
+void Map::DrawPass(){
+    std::cout << " ";
+}
+
+bool Map::DrawWall(int &j){
+    if(j == 0 || j == Wedht - 1){
+        std::cout << Wall;
+        return true;
+    }
+    return false;
+}
+
+bool Map::DrawHead(Snake &snake, int &i, int &j){
+    if(j == snake.HeadX() && i == snake.HeadY()){
+        std::cout << SHead;
+        return true;
+    }
+    return false;
+}
+
+
+bool Map::DrawTail(Snake &snake, int &i, int &j){
+    for(int k = 0; k < snake.TailSize(); k++){
+        if(snake.TailX(k) == j && snake.TailY(k) == i){
+            std::cout << STail;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Map::DrawFruit(Fruit &fruit, int &i, int &j){
+    for (int k = 0; k < fruit.Size(); k++){
+        if (fruit.FruitX(k) == j && fruit.FruitY(k) == i){
+            std::cout << EFruit;
+            return true;
+        }
+    }
+    return false;
+}
+
 
 void Map::DrawMap(Snake &snake, Fruit &fruit){
     Horizontal();
