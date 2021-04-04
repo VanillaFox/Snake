@@ -20,8 +20,6 @@ class Snake{
         void IncreaseTail();
         bool CrashYourself();
 
-        void NewHead(int w, int h){
-            Head = std::make_pair(w / 2, h / 2);
-        }
+        void NewHead(int &w, int &h);
 
 };
