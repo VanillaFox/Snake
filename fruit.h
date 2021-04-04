@@ -19,8 +19,5 @@ class Fruit{
         void AddFruit();
         void RewriteFruit(int i);
         void NewCoordsForLast();
-        void NewSide(int w, int h){
-            Wedht = w;
-            Height = h;
-        }
+        void NewSide(int &w, int &h);
 };
