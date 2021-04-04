@@ -6,19 +6,25 @@
 
 class Map{
     private:
-        char Wall = '+';
-        char STail = '*';
-        char SHead = 'o';
-        char EFruit = '$';
+        const char Wall = '+';
+        const char STail = '*';
+        const char SHead = 'o';
+        const char EFruit = '$';
         int Wedht, Height;
         std::clock_t Start;
 
         bool Same(Snake &snake, Fruit &fruit);
         void TimeFruit(Snake &snake, Fruit &fruit);
         void Horizontal();
+        void DrawPass();
+        void NewLine();
         void DrawMap(Snake &snake, Fruit &fruit);
         void MiddleMap(Snake &snake, Fruit &fruit);
-        
+        bool DrawWall(int &j);
+        bool DrawHead(Snake &snake, int &i, int &j);
+        bool DrawTail(Snake &snake, int &i, int &j);
+        bool DrawFruit(Fruit &fruit, int &i, int &j);
+
     public:
         Map();
         ~Map();
