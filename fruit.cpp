@@ -44,3 +44,8 @@ void Fruit::RewriteFruit(int i){
     Fruits.erase(Fruits.begin() + i);
     AddFruit();
 }
+
+void Fruit::NewSide(int &w, int &h){
+    Wedht = w;
+    Height = h;
+}
