@@ -60,3 +60,7 @@ void Snake::NewCoord(int i, char c){
     else
         Head.second += i;
 }
+
+void Snake::NewHead(int &w, int &h){
+    Head = std::make_pair(w / 2, h / 2);
+}
