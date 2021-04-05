@@ -42,6 +42,7 @@ class Game{
         Snake snake;
         Fruit fruit;
         int height, wedht, Score = 0;
+        const int plusScore = 15;
         bool GameOver;
         Directon dir;
 
