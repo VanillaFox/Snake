@@ -147,7 +147,7 @@ void Game::EatFruit(){
             snake.IncreaseTail();
             fruit.RewriteFruit(i);
             map.Check(snake, fruit);   
-            Score += 15;
+            Score += plusScore;
         } 
     }
 }
